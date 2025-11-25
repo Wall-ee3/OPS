@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório da OP</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f3f3f3;
+        padding: 20px;
+    }
+
+    .card {
+        background: white;
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+        box-shadow: 0 0 12px rgba(0,0,0,0.2);
+        border-radius: 12px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .label {
+        font-weight: bold;
+        width: 40%;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Relatório da OP</h2>
+
+    <table>
+        <tr><td class="label">OP</td><td id="op"></td></tr>
+        <tr><td class="label">Item</td><td id="item"></td></tr>
+        <tr><td class="label">Qtd Prevista</td><td id="prev"></td></tr>
+        <tr><td class="label">Qtd Produzida</td><td id="prod"></td></tr>
+        <tr><td class="label">Status</td><td id="status"></td></tr>
+        <tr><td class="label">Observação</td><td id="obs"></td></tr>
+        <tr><td class="label">Data de Início</td><td id="inicio"></td></tr>
+        <tr><td class="label">Data de Término</td><td id="termino"></td></tr>
+    </table>
+</div>
+
+<script>
+// Lê os parâmetros da URL (os dados do QR Code)
+const params = new URLSearchParams(window.location.search);
+
+document.getElementById("op").innerText = params.get("OP") || "";
+document.getElementById("item").innerText = params.get("Item") || "";
+document.getElementById("prev").innerText = params.get("Prevista") || "";
+document.getElementById("prod").innerText = params.get("Produzida") || "";
+document.getElementById("status").innerText = params.get("Status") || "";
+document.getElementById("obs").innerText = params.get("Obs") || "";
+document.getElementById("inicio").innerText = params.get("Inicio") || "";
+document.getElementById("termino").innerText = params.get("Termino") || "";
+</script>
+
+</body>
+</html>
