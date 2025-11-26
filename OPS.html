@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Relatório da OP</title>
+
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -39,11 +40,36 @@
         font-weight: bold;
         width: 40%;
     }
+
+    /* Ocultar fundo na impressão */
+    @media print {
+        body {
+            background: white;
+        }
+        .card {
+            box-shadow: none;
+        }
+        #btnPDF {
+            display: none;
+        }
+    }
+
+    #btnPDF {
+        margin-top: 20px;
+        padding: 12px;
+        width: 100%;
+        background: #2c7be5;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
 
-<div class="card">
+<div class="card" id="relatorioCard">
     <h2>Relatório da OP</h2>
 
     <table>
@@ -53,14 +79,16 @@
         <tr><td class="label">Qtd Produzida</td><td id="prod"></td></tr>
         <tr><td class="label">Status</td><td id="status"></td></tr>
         <tr><td class="label">Observação</td><td id="obs"></td></tr>
+        <tr><td class="label">Local</td><td id="local"></td></tr>
         <tr><td class="label">Data de Início</td><td id="inicio"></td></tr>
         <tr><td class="label">Data de Término</td><td id="termino"></td></tr>
-        <tr><td class="label">Local</td><td id="local"></td></tr>
     </table>
 </div>
 
+<button id="btnPDF" onclick="window.print()">Salvar PDF</button>
+
 <script>
-// Lê os parâmetros da URL enviados pelo QR Code
+// Lê os parâmetros da URL
 const params = new URLSearchParams(window.location.search);
 
 document.getElementById("op").innerText = params.get("OP") || "";
@@ -69,9 +97,16 @@ document.getElementById("prev").innerText = params.get("Prevista") || "";
 document.getElementById("prod").innerText = params.get("Produzida") || "";
 document.getElementById("status").innerText = params.get("Status") || "";
 document.getElementById("obs").innerText = params.get("Obs") || "";
+document.getElementById("local").innerText = params.get("Local") || "";
 document.getElementById("inicio").innerText = params.get("Inicio") || "";
 document.getElementById("termino").innerText = params.get("Termino") || "";
-document.getElementById("local").innerText = params.get("Local") || "";
+
+// IMPRESSÃO AUTOMÁTICA
+window.onload = function () {
+    setTimeout(() => {
+        window.print();
+    }, 800);
+};
 </script>
 
 </body>
