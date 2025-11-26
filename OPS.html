@@ -81,9 +81,8 @@
 
 <div class="card" id="relatorioCard">
 
-<img src="quantum.png" alt="Logo Quantum" style="width:130px; display:block; margin:0 auto 10px auto;">
+    <img src="quantum.png" alt="Logo Quantum" style="width:130px; display:block; margin:0 auto 10px auto;">
 
-    
     <h2>Relatório da OP</h2>
 
     <table>
@@ -110,31 +109,34 @@
 <button class="btn2" onclick="window.print()">Imprimir</button>
 
 <script>
-// Coleta parâmetros da URL
-const params = new URLSearchParams(window.location.search);
+// Função para coletar parâmetros
+function getParam(name) {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name) || "";
+}
 
-// ID fixo enviado pelo AppSheet (nunca muda)
-const id = params.get("ID");
+// ID FIXO (não muda)
+const id = getParam("ID");
 
-// Dados variáveis
-document.getElementById("op").innerText = params.get("OP") || "";
-document.getElementById("item").innerText = params.get("Item") || "";
-document.getElementById("prev").innerText = params.get("Prevista") || "";
-document.getElementById("prod").innerText = params.get("Produzida") || "";
-document.getElementById("status").innerText = params.get("Status") || "";
-document.getElementById("obs").innerText = params.get("Obs") || "";
-document.getElementById("local").innerText = params.get("Local") || "";
-document.getElementById("inicio").innerText = params.get("Inicio") || "";
-document.getElementById("termino").innerText = params.get("Termino") || "";
-document.getElementById("turno").innerText = params.get("Turno") || "";
+// Preenche os campos com os dados da URL
+document.getElementById("op").innerText = id;
+document.getElementById("item").innerText = getParam("Item");
+document.getElementById("prev").innerText = getParam("Prevista");
+document.getElementById("prod").innerText = getParam("Produzida");
+document.getElementById("status").innerText = getParam("Status");
+document.getElementById("obs").innerText = getParam("Obs");
+document.getElementById("local").innerText = getParam("Local");
+document.getElementById("turno").innerText = getParam("Turno");
+document.getElementById("inicio").innerText = getParam("Inicio");
+document.getElementById("termino").innerText = getParam("Termino");
 
-// 🔥 QR CODE FIXO BASEADO NO ID
-const qrLink =
-    "https://wall-ee3.github.io/OPS.html?ID=" + encodeURIComponent(id);
+// QR CODE FIXO - sempre o mesmo link base
+const qrLink = "https://wall-ee3.github.io/OPS.html?ID=" + encodeURIComponent(id);
 
 document.getElementById("qrImg").src =
     "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" +
     encodeURIComponent(qrLink);
+
 </script>
 
 </body>
