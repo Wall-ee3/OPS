@@ -8,42 +8,37 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        background: #ffffff; /* fundo branco */
+        background: #f3f3f3;
         padding: 20px;
-        color: #000; /* texto preto */
     }
 
     .card {
-        background: #ffffff; /* totalmente branco */
+        background: white;
         max-width: 500px;
         margin: auto;
         padding: 20px;
-        box-shadow: 0 0 12px rgba(0,0,0,0.15);
+        box-shadow: 0 0 12px rgba(0,0,0,0.2);
         border-radius: 12px;
-        border: 1px solid #ddd;
     }
 
     h2 {
         text-align: center;
         margin-bottom: 20px;
-        color: #000;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        color: #000;
     }
 
     td {
         padding: 10px;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid #ddd;
     }
 
     .label {
         font-weight: bold;
         width: 40%;
-        color: #000;
     }
 
     #qr {
@@ -78,13 +73,6 @@
     @media print {
         .btn, .btn2 {
             display: none;
-        }
-        body {
-            background: #fff;
-        }
-        .card {
-            box-shadow: none;
-            border: none;
         }
     }
 </style>
@@ -126,11 +114,12 @@ function getParam(name) {
     return url.searchParams.get(name) || "";
 }
 
-// ID FIXO
-const id = getParam("ID");
+// Pega o Código Fixo (ID) e a OP verdadeira
+const id = getParam("ID");      // Código Fixo
+const op = getParam("OP");      // OP verdadeira
 
-// Preenche os campos
-document.getElementById("op").innerText = id;
+// Preenche campos
+document.getElementById("op").innerText = op;
 document.getElementById("item").innerText = getParam("Item");
 document.getElementById("prev").innerText = getParam("Prevista");
 document.getElementById("prod").innerText = getParam("Produzida");
@@ -141,8 +130,9 @@ document.getElementById("turno").innerText = getParam("Turno");
 document.getElementById("inicio").innerText = getParam("Inicio");
 document.getElementById("termino").innerText = getParam("Termino");
 
-// QR Code
+// QR FIXO baseado no Código Fixo
 const qrLink = "https://wall-ee3.github.io/OPS.html?ID=" + encodeURIComponent(id);
+
 document.getElementById("qrImg").src =
     "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" +
     encodeURIComponent(qrLink);
