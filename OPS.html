@@ -100,6 +100,10 @@
 // Lê os parâmetros da URL
 const params = new URLSearchParams(window.location.search);
 
+// ID fixo enviado pelo AppSheet
+const id = params.get("ID");
+
+// Dados variáveis (opcionais, se quiser usar depois)
 const op = params.get("OP") || "";
 const item = params.get("Item") || "";
 const prevista = params.get("Prevista") || "";
@@ -110,7 +114,8 @@ const local = params.get("Local") || "";
 const inicio = params.get("Inicio") || "";
 const termino = params.get("Termino") || "";
 const turno = params.get("Turno") || "";
-// Preenche os dados
+
+// Preenche os campos do relatório
 document.getElementById("op").innerText = op;
 document.getElementById("item").innerText = item;
 document.getElementById("prev").innerText = prevista;
@@ -121,12 +126,13 @@ document.getElementById("local").innerText = local;
 document.getElementById("inicio").innerText = inicio;
 document.getElementById("termino").innerText = termino;
 document.getElementById("turno").innerText = turno;
-// URL completa que o QR deve conter
-const fullURL = window.location.href;
 
-// Gera o QR Code (APARECE NO PDF)
+// 🔥 LINK FIXO PARA O QR CODE (NUNCA MUDA)
+const qrLink = "https://wall-ee3.github.io/OPS.html?ID=" + id;
+
+// Gera QR SEMPRE IGUAL
 document.getElementById("qrImg").src =
-    "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(fullURL);
+    "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(qrLink);
 
 // IMPRESSÃO AUTOMÁTICA
 window.onload = function () {
