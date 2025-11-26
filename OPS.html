@@ -108,56 +108,66 @@
 <button class="btn2" onclick="window.print()">Imprimir</button>
 
 <script>
-// Função para coletar parâmetros
+const sheetID = "1i2mCgUtb6swVZ8PAyA8HwnO-jVPwPurIywReqZfqChs";
+const range = "Página1"; 
+
 function getParam(name) {
     const url = new URL(window.location.href);
     return url.searchParams.get(name) || "";
 }
 
-// Pega todos os campos da URL
-const id = getParam("ID");
-const op = getParam("OP");
-const item = getParam("Item");
-const prevista = getParam("Prevista");
-const produzida = getParam("Produzida");
-const status = getParam("Status");
-const obs = getParam("Obs");
-const localx = getParam("Local");
-const turno = getParam("Turno");
-const inicio = getParam("Inicio");
-const termino = getParam("Termino");
+const ID = getParam("id"); // <-- só precisa do ID agora
 
-// Preenche os campos da página
-document.getElementById("op").innerText = op;
-document.getElementById("item").innerText = item;
-document.getElementById("prev").innerText = prevista;
-document.getElementById("prod").innerText = produzida;
-document.getElementById("status").innerText = status;
-document.getElementById("obs").innerText = obs;
-document.getElementById("local").innerText = localx;
-document.getElementById("turno").innerText = turno;
-document.getElementById("inicio").innerText = inicio;
-document.getElementById("termino").innerText = termino;
+if (!ID) {
+    alert("Nenhum ID informado.\nUse assim: ?id=11221-T");
+}
 
-// 🔥 GERA O LINK COMPLETO LIMPO
-const fullLink = 
-    `https://wall-ee3.github.io/OPS.html?` +
-    `ID=${encodeURIComponent(id)}` +
-    `&OP=${encodeURIComponent(op)}` +
-    `&Item=${encodeURIComponent(item)}` +
-    `&Prevista=${encodeURIComponent(prevista)}` +
-    `&Produzida=${encodeURIComponent(produzida)}` +
-    `&Status=${encodeURIComponent(status)}` +
-    `&Obs=${encodeURIComponent(obs)}` +
-    `&Inicio=${encodeURIComponent(inicio)}` +
-    `&Termino=${encodeURIComponent(termino)}` +
-    `&Local=${encodeURIComponent(localx)}` +
-    `&Turno=${encodeURIComponent(turno)}`;
+// Busca dados no Google Sheets
+async function loadData() {
+    const url =
+        `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
 
-// 📌 QR CODE do link REAL e COMPLETO
-document.getElementById("qrImg").src =
-    "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" +
-    encodeURIComponent(fullLink);
+    const response = await fetch(url);
+    const text = await response.text();
+    const json = JSON.parse(text.substring(47, text.length - 2));
+
+    const rows = json.table.rows;
+
+    let found = null;
+
+    rows.forEach(r => {
+        const op = r.c[0]?.v || "";  // Coluna da OP
+        if (op == ID) {
+            found = r;
+        }
+    });
+
+    if (!found) {
+        alert("OP não encontrada na planilha!");
+        return;
+    }
+
+    // Preenche os campos com as colunas da planilha
+    document.getElementById("op").innerText = found.c[0]?.v || "";
+    document.getElementById("item").innerText = found.c[1]?.v || "";
+    document.getElementById("prev").innerText = found.c[2]?.v || "";
+    document.getElementById("prod").innerText = found.c[3]?.v || "";
+    document.getElementById("status").innerText = found.c[4]?.v || "";
+    document.getElementById("obs").innerText = found.c[5]?.v || "";
+    document.getElementById("local").innerText = found.c[6]?.v || "";
+    document.getElementById("turno").innerText = found.c[7]?.v || "";
+    document.getElementById("inicio").innerText = found.c[8]?.v || "";
+    document.getElementById("termino").innerText = found.c[9]?.v || "";
+
+    // QR CODE sempre atualizado
+    const fullLink = `https://wall-ee3.github.io/OPS.html?id=${encodeURIComponent(ID)}`;
+
+    document.getElementById("qrImg").src =
+        "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" +
+        encodeURIComponent(fullLink);
+}
+
+loadData();
 </script>
 
 </body>
